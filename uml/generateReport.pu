@@ -1,0 +1,18 @@
+@startuml
+actor Browser
+Browser -> HolmesIntegratedService: generateReport( holmesRequest )
+activate HolmesIntegratedService
+HolmesIntegratedService -> CustomerAnalyser: createCustomerModel( holmesRequest )
+activate CustomerAnalyser
+HolmesIntegratedService <-- CustomerAnalyser: customerModel
+deactivate CustomerAnalyser
+HolmesIntegratedService -> ContentGenerationService: generateCustomerNarrative( customerModel )
+activate ContentGenerationService
+HolmesIntegratedService <-- ContentGenerationService: customerReport
+deactivate ContentGenerationService
+create HolmesResponse
+HolmesIntegratedService -> HolmesResponse: new
+HolmesIntegratedService -> HolmesResponse: setCustomerReport( customerReport )
+Browser <-- HolmesIntegratedService: HolmesResponse
+deactivate HolmesIntegratedService
+@enduml
